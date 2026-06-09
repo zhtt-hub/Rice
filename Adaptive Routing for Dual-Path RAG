@@ -1,0 +1,86 @@
+Input:
+    User query q
+    Rice document knowledge base KB
+    Rice knowledge graph G
+    Routing feature extractor F(·)
+    Fast-path weight vector α
+    Slow-path weight vector β
+    Routing margin δ
+
+Output:
+    Selected processing path p
+    Routing decision record R
+
+1. Initialize routing decision record R
+
+2. Receive user query q
+
+3. Normalize q:
+       Remove redundant spaces and symbols,
+       standardize rice-domain terms,
+       and identify possible abbreviations or aliases
+
+4. Extract routing features using F(q):
+       fe: entity feature
+           Measures whether q contains explicit rice-domain entities,
+           such as rice varieties, diseases, pests, regions, traits, or growth stages
+
+       fi: intent feature
+           Measures whether q asks for fact lookup, relation query,
+           causal explanation, management suggestion, or literature synthesis
+
+       fc: constraint feature
+           Measures the number and complexity of constraints in q,
+           such as region, season, growth stage, disease severity,
+           climate stress, and management objective
+
+       fg: graph matching feature
+           Measures whether entities in q can be linked to nodes or paths in G
+
+       fr: retrieval confidence feature
+           Measures the confidence of initial retrieval from KB or G
+
+       ft: reasoning demand feature
+           Measures whether q requires decomposition, comparison,
+           multi-source evidence integration, or stepwise reasoning
+
+5. Construct feature vector:
+       x(q) = [fe, fi, fc, fg, fr, ft]
+
+6. Compute fast-path score:
+       W_fast = α1 * fe + α2 * fi + α3 * fg + α4 * fr
+
+7. Compute slow-path score:
+       W_slow = β1 * fc + β2 * ft + β3 * (1 - fr) + β4 * (1 - fg)
+
+8. If W_fast - W_slow >= δ then
+
+9.     Select GraphRAG fast path:
+           p = "GraphRAG_Fast_Path"
+
+10. Else if W_slow - W_fast >= δ then
+
+11.    Select CoT-RAG slow path:
+           p = "CoT_RAG_Slow_Path"
+
+12. Else
+
+13.    Handle boundary case:
+           If q contains explicit graph entities and relation targets then
+14.            p = "GraphRAG_Fast_Path"
+15.        Else
+16.            p = "CoT_RAG_Slow_Path"
+17.        End If
+
+18. End If
+
+19. Store routing information in R:
+       original query q,
+       feature vector x(q),
+       W_fast,
+       W_slow,
+       selected path p,
+       and decision reason
+
+20. Return p and R
+```
