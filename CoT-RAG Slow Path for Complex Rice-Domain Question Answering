@@ -1,0 +1,101 @@
+Input:
+    User query q
+    Rice document knowledge base KB
+    Rice knowledge graph G
+    Evidence mapping table T_map
+    Maximum number of sub-questions N
+    Number of retrieved chunks K
+    Language model LLM
+
+Output:
+    Evidence-grounded answer a
+    Reasoning trace T_reason
+    Supporting evidence set E_final
+
+1. Receive user query q from the adaptive routing module
+
+2. Normalize q:
+       Standardize rice-domain terms,
+       identify rice varieties, regions, diseases, pests,
+       growth stages, environmental factors, and management goals
+
+3. Analyze the complexity of q:
+       Detect whether q contains multiple constraints,
+       such as region, season, growth stage, climate stress,
+       disease severity, pest pressure, or cultivation objective
+
+4. Decompose q into sub-questions:
+       Q = {q1, q2, ..., qm}, where m <= N
+
+       Example:
+           q1: Identify the growth stage and management objective
+           q2: Retrieve relevant disease or pest information
+           q3: Retrieve water and fertilizer management evidence
+           q4: Integrate evidence and generate a final recommendation
+
+5. Initialize evidence set E_all as an empty set
+6. Initialize reasoning trace T_reason as an empty list
+
+7. For each sub-question qi in Q do
+
+8.     Retrieve text evidence from KB:
+           Use qi as the retrieval query
+           Retrieve top-K candidate chunks from KB
+
+9.     Retrieve graph evidence from G if qi contains explicit entities:
+           Link entities in qi to graph nodes
+           Retrieve related triples, paths, or neighboring nodes
+
+10.    Merge text evidence and graph evidence:
+           E_i = text evidence ∪ graph evidence
+
+11.    Rank E_i according to:
+           relevance to qi,
+           source reliability,
+           evidence completeness,
+           and consistency with other retrieved evidence
+
+12.    Select top-ranked evidence for qi
+
+13.    Append selected evidence to E_all
+
+14.    Record intermediate reasoning step:
+           <sub-question qi, selected evidence, local conclusion>
+
+15. End For
+
+16. Integrate evidence from all sub-questions:
+       Remove duplicated evidence,
+       resolve conflicting evidence,
+       and keep evidence directly related to q
+
+17. Construct reasoning prompt:
+       Include original query q,
+       decomposed sub-questions Q,
+       selected evidence E_all,
+       and instructions for evidence-grounded reasoning
+
+18. Generate preliminary answer:
+       a_pre = LLM(reasoning prompt)
+
+19. Verify answer consistency:
+       For each key statement in a_pre:
+           Check whether it is supported by E_all
+           Check whether it conflicts with retrieved evidence
+           Check whether it ignores important constraints in q
+
+20. If unsupported or conflicting content is found then
+       Revise the reasoning trace
+       Remove unsupported statements
+       Regenerate or refine the answer
+
+21. Select final evidence:
+       E_final = evidence actually used to support the final answer
+
+22. Generate final answer a:
+       The answer should be concise,
+       condition-aware,
+       and supported by evidence identifiers when available
+
+23. Return a, T_reason, and E_final
+```
