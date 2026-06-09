@@ -1,0 +1,30 @@
+{
+  "sample_total": 11018,
+  "by_question_type": {
+    "事实型问题": 1700,
+    "关系型问题": 1667,
+    "轻量多跳问题": 2345,
+    "复杂推理问题": 1924,
+    "文献综合问题": 3382
+  },
+  "by_evidence_source": {
+    "文档知识库": 2114,
+    "开放获取论文全文、科研文献题录": 3505,
+    "农业标准题录、政府公开文件": 1532,
+    "水稻应用知识图谱": 3867
+  },
+  "duplicate_question_id_count": 0,
+  "question_empty": 0,
+  "reference_answer_empty": 0,
+  "evidence_source_empty": 0,
+  "route_label_empty": 0,
+  "question_type_unrecognized": 0,
+  "too_few_threshold": 100,
+  "too_few_by_type": {},
+  "route_inconsistency_by_type": {},
+  "rejected_during_review": {
+    "重复问答": 13068,
+    "目录或参考文献噪声": 2
+  },
+  "review_note": "本文件为机器辅助复核通过的大规模候选问答集；复核规则包括字段完整性、去重、实体合法性、证据长度、路径一致性和显著噪声过滤。"
+}

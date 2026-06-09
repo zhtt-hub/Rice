@@ -1,0 +1,38 @@
+{
+  "total_content_qa": 649,
+  "by_source_category": {
+    "内部本地水稻资料全文": 363,
+    "品种结构化记录": 164,
+    "开放获取论文全文": 46,
+    "技术规程与农业标准数据": 4,
+    "政府公开技术文件": 72
+  },
+  "by_qa_type": {
+    "事实型问答": 164,
+    "关系型问答": 453,
+    "应用型问答": 28,
+    "复杂推理型问答": 3,
+    "综合分析型问答": 1
+  },
+  "by_construction_method": {
+    "品种适宜范围规则抽取": 40,
+    "品种特征特性规则抽取": 8,
+    "病害病原规则抽取": 9,
+    "水稻应用知识图谱关系生成": 343,
+    "本地问答型资料抽取": 28,
+    "品种结构化字段生成": 164,
+    "开放全文知识图谱证据生成": 18,
+    "既有种子问答样本并入": 39
+  },
+  "by_complexity": {
+    "低": 380,
+    "中": 265,
+    "高": 4
+  },
+  "files": {
+    "jsonl": "D:\\download\\大论文\\large_scale\\qa\\rice_content_qa_dataset.jsonl",
+    "csv": "D:\\download\\大论文\\large_scale\\qa\\rice_content_qa_dataset.csv",
+    "xlsx": "D:\\download\\大论文\\large_scale\\qa\\rice_content_qa_dataset.xlsx"
+  },
+  "note": "该数据集为内容型候选问答，区别于 standard_qa_1507 中的标准编号类元数据问答，仍需领域专家抽样复核。"
+}

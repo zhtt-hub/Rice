@@ -1,0 +1,29 @@
+{
+  "input_file": "D:\\download\\大论文\\large_scale\\qa\\rice_content_qa_dataset_large_reviewed.csv",
+  "sample_total": 11018,
+  "duplicate_question_id_count": 0,
+  "duplicate_question_ids": [],
+  "missing_counts": {},
+  "unrecognized_question_type_count": 0,
+  "unrecognized_question_types": {},
+  "route_inconsistency_by_type": {},
+  "too_few_threshold": 10,
+  "too_few_by_type": {},
+  "field_mapping": {
+    "question_id": "question_id 或 qa_id",
+    "question": "question",
+    "question_type": "question_type 或 qa_type",
+    "reference_answer": "reference_answer、answer 或 standard_answer",
+    "evidence_source": "evidence_source；若不存在则由 source_category / construction_method / source_url 归一化",
+    "route_label": "route_label 或 adapted_route",
+    "key_entities": "key_entities；当前文件未提供该字段则记为空",
+    "difficulty_level": "difficulty_level 或 complexity"
+  },
+  "type_mapping_used": {
+    "事实型问答": "事实型问题",
+    "关系型问答": "关系型问题",
+    "应用型问答": "轻量多跳问题",
+    "复杂推理型问答": "复杂推理问题",
+    "综合分析型问答": "文献综合问题"
+  }
+}
