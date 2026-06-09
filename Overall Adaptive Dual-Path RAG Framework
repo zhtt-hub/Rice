@@ -1,0 +1,83 @@
+Input:
+    User query q
+    Rice document knowledge base KB
+    Rice knowledge graph G
+    Vector index I
+    Evidence mapping table T_map
+    Adaptive routing module Router
+    Language model LLM
+
+Output:
+    Final evidence-grounded answer a
+    System execution record R_sys
+
+1. Receive user query q
+
+2. Initialize system execution record R_sys
+
+3. Preprocess q:
+       Remove redundant symbols,
+       normalize rice-domain terminology,
+       identify possible entities, constraints, and user intent
+
+4. Perform initial retrieval diagnosis:
+       Search KB using q
+       Link possible entities in q to G
+       Estimate retrieval confidence and graph matching confidence
+
+5. Call adaptive routing module:
+       p, R_route = Router(q, KB, G)
+
+6. Store routing record R_route into R_sys
+
+7. If p is "GraphRAG_Fast_Path" then
+
+8.     Execute GraphRAG fast path:
+           a, E_final = GraphRAG_Fast_Path(q, G, KB, T_map, LLM)
+
+9. Else if p is "CoT_RAG_Slow_Path" then
+
+10.    Execute CoT-RAG slow path:
+           a, T_reason, E_final = CoT_RAG_Slow_Path(q, KB, G, T_map, LLM)
+
+11. Else
+
+12.    Use default Standard RAG fallback:
+           Retrieve top-ranked chunks from KB
+           Generate answer using retrieved evidence
+           Store retrieved evidence as E_final
+
+13. End If
+
+14. Check evidence sufficiency:
+       Determine whether the final answer contains enough supporting evidence
+       and whether key claims are grounded in E_final
+
+15. If evidence is insufficient then
+
+16.    Perform supplementary retrieval:
+           Retrieve additional chunks from KB
+           Retrieve additional graph triples from G if entities are available
+
+17.    Update E_final with supplementary evidence
+
+18.    Regenerate or revise answer a using updated evidence
+
+19. End If
+
+20. Check answer reliability:
+       Remove unsupported claims,
+       avoid over-generalized agronomic suggestions,
+       and keep the answer consistent with retrieved evidence
+
+21. Save execution information into R_sys:
+       original query,
+       selected path,
+       routing features,
+       retrieved evidence,
+       reasoning trace if available,
+       final answer,
+       and evidence identifiers
+
+22. Return final answer a and system execution record R_sys
+```
