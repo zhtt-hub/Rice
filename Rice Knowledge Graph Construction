@@ -1,0 +1,79 @@
+Input:
+    Cleaned rice-domain corpus C = {c1, c2, ..., cn}
+    Entity schema S_e
+    Relation schema S_r
+    Domain dictionary Dict
+    Confidence threshold θ
+
+Output:
+    Rice knowledge graph G = (V, E)
+    Evidence mapping table T_map
+
+1. Initialize node set V as an empty set
+2. Initialize edge set E as an empty set
+3. Initialize evidence mapping table T_map as an empty table
+
+4. Define entity types in S_e:
+       rice variety, parent material, agronomic trait, disease,
+       pest, pathogen, symptom, control measure, cultivation measure,
+       growth stage, suitable region, environmental factor, and yield trait
+
+5. Define relation types in S_r:
+       has_trait, suitable_for, resistant_to, caused_by, has_symptom,
+       damages_part, controlled_by, applied_at_stage, requires_condition,
+       related_to_region, and supported_by_document
+
+6. For each text chunk c_i in C do
+
+7.     Perform domain term matching using Dict
+           Identify known rice varieties, disease names, pest names,
+           growth stages, regions, and management terms
+
+8.     Extract candidate entities from c_i according to S_e
+
+9.     Normalize entity names:
+           Merge aliases, remove redundant modifiers,
+           unify Chinese and English expressions when necessary,
+           and map abbreviations to standard names
+
+10.    Extract candidate relations from c_i according to S_r
+           Use rule-based patterns, dependency cues, or model-based extraction
+
+11.    For each candidate entity e do
+
+12.        If e is valid and belongs to the predefined entity schema then
+13.            Add e to node set V
+14.            Link e with supporting chunk c_i in T_map
+15.        End If
+
+16.    End For
+
+17.    For each candidate relation r = <head, relation, tail> do
+
+18.        Check whether head and tail are valid domain entities
+
+19.        Check whether relation type belongs to S_r
+
+20.        Estimate confidence score score(r)
+
+21.        If score(r) >= θ then
+22.            Add triple <head, relation, tail> to edge set E
+23.            Record supporting chunk id of r in T_map
+24.        End If
+
+25.    End For
+
+26. End For
+
+27. Perform graph post-processing:
+       Remove isolated noisy nodes,
+       merge duplicated nodes,
+       remove conflicting low-confidence edges,
+       and retain evidence links for each node and relation
+
+28. Construct graph G = (V, E)
+
+29. Save G and T_map to graph storage
+
+30. Return G and T_map
+```
