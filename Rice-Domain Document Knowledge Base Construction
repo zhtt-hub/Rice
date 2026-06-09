@@ -1,0 +1,70 @@
+Input:
+    Raw document collection D = {d1, d2, ..., dn}
+    Document metadata M = {m1, m2, ..., mn}
+    Chunk size L
+    Chunk overlap O
+    Embedding model Emb(·)
+
+Output:
+    Rice-domain document knowledge base KB
+    Vector index I
+
+1. Initialize KB as an empty collection
+2. Initialize Chunk_List as an empty list
+
+3. For each document d_i in D do
+
+4.     Load document d_i according to its file type
+           Supported formats may include PDF, DOCX, TXT, HTML, CSV, and structured records
+
+5.     Extract raw text T_i from d_i
+
+6.     Clean T_i:
+           Remove page headers, footers, page numbers, references not used for QA,
+           duplicated paragraphs, invalid symbols, broken line breaks, and OCR noise
+
+7.     Normalize T_i:
+           Standardize punctuation, units, variety names, disease names,
+           pest names, growth-stage terms, and agricultural terminology
+
+8.     Attach metadata m_i:
+           source type, document title, publication year, author or institution,
+           document category, crop topic, and original file path
+
+9.     Split T_i into initial paragraphs P_i = {p1, p2, ..., pk}
+
+10.    Merge short paragraphs when their semantic meaning is incomplete
+
+11.    Divide the normalized text into semantic chunks C_i = {c1, c2, ..., cm}
+           Each chunk should be close to length L
+           Adjacent chunks preserve overlap O
+           Chunk boundaries should avoid breaking disease descriptions,
+           cultivation procedures, variety attributes, or standard clauses
+
+12.    For each chunk c_j in C_i do
+
+13.        Generate a stable chunk identifier:
+               cid = document_id + "#" + chunk_index
+
+14.        Build chunk metadata:
+               chunk_id, document_id, source type, title, topic,
+               start position, end position, and update timestamp
+
+15.        Generate embedding vector:
+               v_j = Emb(c_j)
+
+16.        Store the following record into KB:
+               <cid, c_j, v_j, chunk_metadata>
+
+17.        Append <cid, v_j> to Chunk_List
+
+18.    End For
+
+19. End For
+
+20. Build vector index I using all embedding vectors in Chunk_List
+
+21. Save KB and I to persistent storage
+
+22. Return KB and I
+```
