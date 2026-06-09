@@ -1,0 +1,94 @@
+Input:
+    User query q
+    Rice knowledge graph G = (V, E)
+    Rice document knowledge base KB
+    Evidence mapping table T_map
+    Maximum graph path length h
+    Number of retrieved text chunks K
+    Language model LLM
+
+Output:
+    Evidence-grounded answer a
+    Supporting evidence set E_final
+
+1. Receive user query q from the adaptive routing module
+
+2. Normalize q:
+       Standardize rice variety names, disease names, pest names,
+       growth-stage terms, and regional expressions
+
+3. Detect key entities in q:
+       Entity types may include rice variety, disease, pest, pathogen,
+       symptom, agronomic trait, cultivation measure, growth stage,
+       suitable region, and environmental factor
+
+4. Link detected entities to graph nodes in G:
+       For each detected entity e_q:
+           Find candidate nodes V_c in G by exact matching, alias matching,
+           dictionary matching, or semantic similarity
+           Select the node with the highest matching score
+           Add the linked node to seed node set V_seed
+
+5. If V_seed is empty then
+       Fall back to document retrieval from KB
+       Retrieve top-K text chunks using dense or hybrid retrieval
+       Construct evidence set E_text
+       Go to Step 13
+   End If
+
+6. Retrieve graph evidence from G:
+       For each seed node v in V_seed:
+           Search neighboring nodes and relation paths within path length h
+           Extract triples related to the query intent
+           Add retrieved triples to graph evidence set E_graph
+
+7. Rank graph evidence:
+       Estimate relevance between q and each triple or relation path
+       Prioritize evidence with:
+           higher entity matching score,
+           shorter relation path,
+           clearer relation type,
+           and stronger support from source documents
+
+8. Retrieve supporting text chunks:
+       For each selected graph triple or relation path r:
+           Use T_map to locate supporting chunk identifiers
+           Retrieve corresponding text chunks from KB
+           Add them to text evidence set E_text
+
+9. Supplement evidence with text retrieval:
+       Use q to retrieve additional top-K chunks from KB
+       Add relevant chunks to E_text
+
+10. Merge evidence:
+       E_candidate = E_graph ∪ E_text
+
+11. Remove duplicated or low-quality evidence:
+       Delete repeated chunks,
+       remove unrelated triples,
+       and discard evidence with weak relevance to q
+
+12. Select final evidence:
+       E_final = top-ranked evidence from E_candidate
+
+13. Construct generation prompt:
+       Include user query q,
+       selected graph triples or relation paths,
+       supporting text chunks,
+       and instruction to generate an evidence-grounded answer
+
+14. Generate answer:
+       a = LLM(prompt)
+
+15. Check evidence grounding:
+       For each key statement in a:
+           Verify whether it is supported by E_final
+           Attach evidence identifiers when available
+
+16. If unsupported statements are detected then
+       Revise or remove unsupported content
+       Regenerate answer if necessary
+   End If
+
+17. Return final answer a and supporting evidence set E_final
+```
